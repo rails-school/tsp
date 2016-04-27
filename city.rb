@@ -10,7 +10,10 @@ class City
   end
 
   def self.distance(city_a, city_b)
-    (city_a.complex - city_b.complex).abs
+    @memo = Hash.new do |key, value|
+      key = (city_a.complex - city_b.complex).abs
+    end
+    @memo[[city_a, city_b].sort_by(&:object_id)]
   end
 
   def self.random_cities(n)

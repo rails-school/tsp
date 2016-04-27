@@ -24,8 +24,8 @@ def shortest(tours)
   tours.min_by(&:distance)
 end
 
-def greedy_tsp(cities)
-  start = cities.first
+def greedy_tsp(cities, start = nil)
+  start ||= cities.first
   tour = [start]
   unvisited = cities - [start]
   loop do
@@ -36,6 +36,14 @@ def greedy_tsp(cities)
   end
 
   Tour.new(tour)
+end
+
+def all_greedy_tsp(cities)
+  shortest(
+    cities.each_with_index.map { |city, index|
+      greedy_tsp(cities, city)
+    }
+  )
 end
 
 def nearest_neighbor(a, cities)
@@ -50,7 +58,11 @@ puts exact.distance
 exact.plot("exact")
 =end
 
-greedy = greedy_tsp(cities1000)
+greedy = greedy_tsp(cities100)
 puts greedy.distance
 greedy.plot("greedy")
+
+all_greedy = all_greedy_tsp(cities100)
+puts all_greedy.distance
+all_greedy.plot("all_greedy")
 
