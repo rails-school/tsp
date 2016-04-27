@@ -52,6 +52,36 @@ def nearest_neighbor(a, cities)
   }
 end
 
+
+
+def greedy_exact_end_tsp(cities, start = nil, end_size = 8)
+  start ||= cities.first
+  tour = [start]
+  unvisited = cities - [start]
+  loop do
+    break unless unvisited.length > end_size
+    c = nearest_neighbor(tour[-1], unvisited)
+    tour.push(c)
+    unvisited.delete(c)
+  end
+
+  best = shortest(
+    unvisited.permutation.map { |permutation|
+      Tour.new([tour[0], tour[-1]] + permutation)
+    }
+  )
+  Tour.new(tour + best.cities[2..-1])
+end
+
+def greedy_bi_tsp(cities, start_size=12, end_size=6)
+  starts = cities.sample([cities.length, start_size].min)
+  shortest(
+    starts.map { |start|
+      greedy_exact_end_tsp(cities, start, end_size)
+    }
+  )
+end
+
 =begin
 exact = exact_tsp(cities10)
 puts exact.distance
@@ -66,3 +96,10 @@ all_greedy = all_greedy_tsp(cities100)
 puts all_greedy.distance
 all_greedy.plot("all_greedy")
 
+greedy_exact_end = greedy_exact_end_tsp(cities100)
+puts greedy_exact_end.distance
+greedy_exact_end.plot("greedy_exact_end")
+
+greedy_bi = greedy_bi_tsp(cities100)
+puts greedy_bi.distance
+greedy_bi.plot("greedy_bi")
