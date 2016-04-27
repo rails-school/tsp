@@ -13,14 +13,14 @@ class Tour
     end
   end
 
-  def plot
+  def plot(filename = Time.now.to_s)
     builder = Nokogiri::XML::Builder.new do |doc|
       doc.svg xmlns:"http://www.w3.org/2000/svg", viewBox:"0 0 900 600" do
         plot_points(doc)
         plot_paths(doc)
       end
     end
-    File.write(Time.now.to_s + ".svg", builder.to_xml)
+    File.write(filename + ".svg", builder.to_xml)
   end
 
   private
