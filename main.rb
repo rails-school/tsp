@@ -2,7 +2,7 @@ require "pry"
 require "./city.rb"
 require "./tour.rb"
 
-srand
+srand(0)
 
 cities8, cities10, cities100, cities1000 =
   [8, 10, 100, 1000].map { |n|
@@ -10,8 +10,9 @@ cities8, cities10, cities100, cities1000 =
   }
 
 def all_tours(cities)
-  cities.permutation.map { |permutation|
-    Tour.new(permutation)
+  start = cities.first
+  (cities - [start]).permutation.map { |permutation|
+    Tour.new([start] + permutation)
   }
 end
 
