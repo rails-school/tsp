@@ -27,6 +27,4 @@ end
 
 tour = exact_tsp(cities8)
 
-puts tour.cities
-puts tour.distance
-
+tour.plot
