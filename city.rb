@@ -5,6 +5,10 @@ class City
 
   attr_reader :complex
 
+  def to_s
+    complex.to_s
+  end
+
   def self.distance(city_a, city_b)
     (city_a.complex - city_b.complex).abs
   end
